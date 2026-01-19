@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KARACABAYRE.EST - v36</title>
+    <title>KARACABAYRE.EST - v37</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -93,11 +93,14 @@
         .calc-btn { padding: 15px; font-size: 18px; cursor: pointer; background: #eee; border: none; border-radius: 4px; }
         .calc-btn.op { background: var(--secondary); color: white; } .calc-btn.eq { background: var(--accent); color: white; grid-column: span 2; }
         
-        /* E-IMAR GRID */
+        /* E-IMAR GRID (GÜNCELLENDİ) */
         .imar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .btn-imar-select { padding: 15px; background: #34495e; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; text-align: left; display: flex; align-items: center; justify-content: space-between; }
         .btn-imar-select:hover { background: #e67e22; }
         .btn-imar-select i { font-size: 18px; opacity: 0.6; }
+        
+        /* Alternatif Link Butonu */
+        .btn-alt-link { background: #7f8c8d; font-size: 11px; padding: 5px; border-radius: 4px; margin-left: 5px; cursor: pointer; border: none; color: white; }
 
         .print-only { display: none; }
         @media print { .input-panel, .filter-bar, .backup-controls, .tools-bar, #loginOverlay { display: none !important; } .no-print { display: none !important; } .print-only { display: table-cell !important; } #appContainer { display: block !important; } body { background: white; padding: 0; margin: 0; } table { width: 100%; font-size: 10px; } th, td { border: 1px solid #ddd; padding: 4px; color: black; } }
@@ -108,7 +111,7 @@
 <div id="loginOverlay">
     <div class="login-box">
         <h2>🔒 GÜVENLİ GİRİŞ</h2>
-        <p>KaracabayRE.EST v36</p>
+        <p>KaracabayRE.EST v37</p>
         <input type="password" id="loginPin" placeholder="Şifre (1923)" inputmode="numeric">
         <button onclick="checkLogin()">GİRİŞ YAP</button>
     </div>
@@ -195,7 +198,7 @@
         </div>
 
         <table id="portfolioTable"><thead><tr><th width="10%">Tür / Durum</th><th width="12%">Lokasyon</th><th width="8%">Özellikler</th><th width="10%">m² (Brüt/Net)</th><th width="11%">Fiyat</th><th width="14%">Müşteri / Tel</th><th width="9%">Yetki</th><th class="no-print" width="6%" style="text-align:center;">Linkler</th><th class="no-print" width="5%" style="text-align:center;">Not</th><th class="no-print" width="8%">İşlem</th><th class="print-only">Açıklama / Notlar</th></tr></thead><tbody id="tableBody"></tbody></table>
-        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (v36 Kararlı Bağlantılar)</div>
+        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (v37 Düzeltilmiş Bağlantılar)</div>
     </div>
 </div>
 
@@ -206,22 +209,24 @@
             <span onclick="closeModal('eImarModal')" style="cursor:pointer;font-size:24px;">&times;</span>
         </div>
         <div class="imar-grid">
-            <button class="btn-imar-select" onclick="window.open('https://www.muratpasa.bel.tr/')">Muratpaşa (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.kepez-bld.gov.tr/')">Kepez (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.konyaalti.bel.tr/')">Konyaaltı (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://dosemealti.bel.tr/')">Döşemealtı (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.aksu.bel.tr/')">Aksu (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.alanya.bel.tr/')">Alanya (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.serik.bel.tr/')">Serik (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.manavgat.bel.tr/')">Manavgat (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.kemer.bel.tr/')">Kemer (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.korkuteli.bel.tr/')">Korkuteli (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.gazipasa.bel.tr/')">Gazipaşa (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.kumluca.bel.tr/')">Kumluca (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.finike.bel.tr/')">Finike (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <button class="btn-imar-select" onclick="window.open('https://www.kas.bel.tr/')">Kaş (Ana Sayfa) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://muratpasa-bld.gov.tr/', '_blank')">Muratpaşa (Resmi) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.muratpasa.bel.tr/', '_blank')">Muratpaşa (Alternatif) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            
+            <button class="btn-imar-select" onclick="window.open('https://www.kepez-bld.gov.tr/', '_blank')">Kepez <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.konyaalti.bel.tr/', '_blank')">Konyaaltı <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://dosemealti.bel.tr/', '_blank')">Döşemealtı <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.aksu.bel.tr/', '_blank')">Aksu <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.alanya.bel.tr/', '_blank')">Alanya <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.serik.bel.tr/', '_blank')">Serik <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.manavgat.bel.tr/', '_blank')">Manavgat <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.kemer.bel.tr/', '_blank')">Kemer <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.korkuteli.bel.tr/', '_blank')">Korkuteli <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.gazipasa.bel.tr/', '_blank')">Gazipaşa <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.kumluca.bel.tr/', '_blank')">Kumluca <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.finike.bel.tr/', '_blank')">Finike <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn-imar-select" onclick="window.open('https://www.kas.bel.tr/', '_blank')">Kaş <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
         </div>
-        <div style="font-size:11px; color:#666; margin-top:10px; text-align:center;">*E-İmar sorgulamaları için açılan sayfaların menülerini kullanınız.</div>
+        <div style="font-size:11px; color:#666; margin-top:10px; text-align:center;">*Güvenlik nedeniyle bağlantılar yeni sekmede "Belediye Ana Sayfası" olarak açılır.</div>
     </div>
 </div>
 
@@ -341,7 +346,7 @@
                    (minP === 0 || p >= minP) && (maxP === 0 || p <= maxP);
         });
 
-        // HİYERARŞİK SIRALAMA
+        // HİYERARŞİK SIRALAMA (v34 İLE AYNI)
         filtered.sort((a, b) => {
             const getStatusScore = (s) => {
                 if (s === 'Satıldı') return 3;
