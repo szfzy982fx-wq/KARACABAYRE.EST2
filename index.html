@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KARACABAYRE.EST - v37</title>
+    <title>KARACABAYRE.EST - v38</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #2c3e50;
-            --secondary: #3498db; /* Mavi - Bana Ait */
-            --shared: #9b59b6;    /* Mor - Paylaşımlı */
-            --accent: #27ae60;    /* Yeşil */
-            --danger: #c0392b;    /* Kırmızı */
-            --link-color: #e67e22; /* Turuncu */
-            --calc-color: #2980b9; /* Koyu Mavi */
+            --secondary: #3498db; 
+            --shared: #9b59b6;    
+            --accent: #27ae60;    
+            --danger: #c0392b;    
+            --link-color: #e67e22; 
+            --calc-color: #2980b9; 
             --tool-bg: #f8f9fa;
             --sold: #d63031;
         }
@@ -66,6 +66,7 @@
         .badge { padding: 3px 6px; border-radius: 3px; color: white; font-size: 10px; font-weight: bold; display:inline-block; margin-bottom: 2px; }
         .satilik { background: #27ae60; } .kiralik { background: #e67e22; } .kirmizi-etiket { background: var(--sold) !important; }
         .badge-own { background: var(--secondary); } .badge-shared { background: var(--shared); }
+        .badge-sicak { background: #e74c3c; } .badge-ilik { background: #f39c12; } .badge-soguk { background: #95a5a6; }
         .type-text { display: block; font-weight: 900; text-transform: uppercase; font-size: 12px; margin-top: 3px; color: #444; }
         
         /* Link Butonları */
@@ -79,28 +80,27 @@
 
         /* Modals */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; overflow-y: hidden; }
-        .modal-content { background: white; margin: 3% auto; padding: 25px; width: 90%; border-radius: 8px; position: relative; max-height: 85vh; display: flex; flex-direction: column; overflow-y: auto; }
+        .modal-content { background: white; margin: 3% auto; padding: 25px; width: 95%; border-radius: 8px; position: relative; max-height: 85vh; display: flex; flex-direction: column; overflow-y: auto; }
         .tool-modal-content { width: 450px; margin: 10% auto; }
         .checklist-item { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
         .checklist-item.checked span { text-decoration: line-through; color: #aaa; }
         
+        /* CRM STYLES (v27 Restore) */
         .crm-header { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
         .crm-tab { padding: 10px 20px; cursor: pointer; font-weight: bold; border-radius: 6px; border: 1px solid #eee; background: #f9f9f9; }
         .crm-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
         .crm-input-panel { background: #f1f2f6; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 5px solid var(--accent); }
+        .crm-input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+        .crm-buttons { display: flex; gap: 10px; margin-top: 15px; }
         
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .calc-btn { padding: 15px; font-size: 18px; cursor: pointer; background: #eee; border: none; border-radius: 4px; }
         .calc-btn.op { background: var(--secondary); color: white; } .calc-btn.eq { background: var(--accent); color: white; grid-column: span 2; }
         
-        /* E-IMAR GRID (GÜNCELLENDİ) */
         .imar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .btn-imar-select { padding: 15px; background: #34495e; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; text-align: left; display: flex; align-items: center; justify-content: space-between; }
         .btn-imar-select:hover { background: #e67e22; }
         .btn-imar-select i { font-size: 18px; opacity: 0.6; }
-        
-        /* Alternatif Link Butonu */
-        .btn-alt-link { background: #7f8c8d; font-size: 11px; padding: 5px; border-radius: 4px; margin-left: 5px; cursor: pointer; border: none; color: white; }
 
         .print-only { display: none; }
         @media print { .input-panel, .filter-bar, .backup-controls, .tools-bar, #loginOverlay { display: none !important; } .no-print { display: none !important; } .print-only { display: table-cell !important; } #appContainer { display: block !important; } body { background: white; padding: 0; margin: 0; } table { width: 100%; font-size: 10px; } th, td { border: 1px solid #ddd; padding: 4px; color: black; } }
@@ -111,7 +111,7 @@
 <div id="loginOverlay">
     <div class="login-box">
         <h2>🔒 GÜVENLİ GİRİŞ</h2>
-        <p>KaracabayRE.EST v37</p>
+        <p>KaracabayRE.EST v38</p>
         <input type="password" id="loginPin" placeholder="Şifre (1923)" inputmode="numeric">
         <button onclick="checkLogin()">GİRİŞ YAP</button>
     </div>
@@ -120,7 +120,7 @@
 <div id="appContainer">
     <div class="container">
         <header>
-            <div><h1>🏢 KARACABAYRE.EST <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">ANTALYA BELEDİYELERİ</span></h1></div>
+            <div><h1>🏢 KARACABAYRE.EST <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">PRO CRM & E-İMAR</span></h1></div>
             <div class="backup-controls">
                 <input type="file" id="fileUpload" style="display:none;" onchange="uploadData(this)">
                 <button class="btn-backup" onclick="document.getElementById('fileUpload').click()">📂 YÜKLE</button>
@@ -198,7 +198,7 @@
         </div>
 
         <table id="portfolioTable"><thead><tr><th width="10%">Tür / Durum</th><th width="12%">Lokasyon</th><th width="8%">Özellikler</th><th width="10%">m² (Brüt/Net)</th><th width="11%">Fiyat</th><th width="14%">Müşteri / Tel</th><th width="9%">Yetki</th><th class="no-print" width="6%" style="text-align:center;">Linkler</th><th class="no-print" width="5%" style="text-align:center;">Not</th><th class="no-print" width="8%">İşlem</th><th class="print-only">Açıklama / Notlar</th></tr></thead><tbody id="tableBody"></tbody></table>
-        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (v37 Düzeltilmiş Bağlantılar)</div>
+        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (v38 Pro CRM)</div>
     </div>
 </div>
 
@@ -211,7 +211,6 @@
         <div class="imar-grid">
             <button class="btn-imar-select" onclick="window.open('https://muratpasa-bld.gov.tr/', '_blank')">Muratpaşa (Resmi) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
             <button class="btn-imar-select" onclick="window.open('https://www.muratpasa.bel.tr/', '_blank')">Muratpaşa (Alternatif) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            
             <button class="btn-imar-select" onclick="window.open('https://www.kepez-bld.gov.tr/', '_blank')">Kepez <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
             <button class="btn-imar-select" onclick="window.open('https://www.konyaalti.bel.tr/', '_blank')">Konyaaltı <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
             <button class="btn-imar-select" onclick="window.open('https://dosemealti.bel.tr/', '_blank')">Döşemealtı <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
@@ -232,7 +231,67 @@
 
 <div id="checklistModal" class="modal" onclick="closeModalOutside(event, 'checklistModal')"><div class="modal-content tool-modal-content"><div style="display:flex;justify-content:space-between; margin-bottom:15px; border-bottom:2px solid #c0392b; padding-bottom:10px;"><h3 style="color:#c0392b; margin:0;"><i class="fa-solid fa-bell"></i> UNUTMA!</h3><span onclick="closeModal('checklistModal')" style="cursor:pointer;font-size:24px;">&times;</span></div><div style="display:flex; gap:10px; margin-bottom:15px;"><input type="text" id="newCheckItem" placeholder="Hatırlatma ekle..." onkeypress="if(event.key==='Enter') addCheckItem()"><button class="btn-save" style="flex:0; width:60px; background:#c0392b;" onclick="addCheckItem()">EKLE</button></div><div id="checklistContainer" style="max-height:400px; overflow-y:auto; border:1px solid #eee; border-radius:4px;"></div></div></div>
 
-<div id="crmModal" class="modal" onclick="closeModalOutside(event, 'crmModal')"><div class="modal-content"><div style="display:flex;justify-content:space-between; margin-bottom:10px;"><h3>👥 Müşteri İlişkileri (CRM)</h3><span onclick="closeModal('crmModal')" style="cursor:pointer;font-size:24px;">&times;</span></div><div class="crm-header"><div id="tab1" class="crm-tab active" onclick="switchCRMTab('investors')">💰 Talep Havuzu</div><div id="tab2" class="crm-tab" onclick="switchCRMTab('network')">📢 Etki Çevresi</div></div><div id="crmInvestors" class="crm-section" style="display:block;"><div class="crm-input-panel"><div class="crm-input-grid"><div class="form-group"><label>Ad Soyad</label><input type="text" id="invName"></div><div class="form-group"><label>Şehir</label><input type="text" id="invCity" value="Antalya"></div><div class="form-group"><label>Telefon</label><textarea id="invPhone" rows="2" class="auto-expand"></textarea></div><div class="form-group"><label>Talep</label><textarea id="invRequest" rows="2" class="auto-expand"></textarea></div></div><div class="crm-buttons"><button class="btn-save" onclick="saveCRMInvestor()">EKLE</button><button id="btnInvDelete" class="btn-delete-rec" onclick="deleteCRMInvestor()">SİL</button><button id="btnInvCancel" class="btn-cancel" onclick="resetCRMForm('investors')">İPTAL</button></div></div><div class="table-scroll-wrapper"><table class="crm-table"><tbody id="investorTableBody"></tbody></table></div></div><div id="crmNetwork" class="crm-section" style="display:none;"><div class="crm-input-panel"><div class="crm-input-grid"><div class="form-group"><label>Ad Soyad</label><input type="text" id="netName"></div><div class="form-group"><label>Şehir</label><input type="text" id="netCity" value="Antalya"></div><div class="form-group"><label>Telefon</label><textarea id="netPhone" rows="2" class="auto-expand"></textarea></div><div class="form-group"><label>Arz/Potansiyel</label><textarea id="netSupply" rows="2" class="auto-expand"></textarea></div><div class="form-group"><label>Son Arama</label><input type="date" id="netLastCall"></div></div><div class="crm-buttons"><button class="btn-save" onclick="saveCRMNetwork()">EKLE</button><button id="btnNetDelete" class="btn-delete-rec" onclick="deleteCRMNetwork()">SİL</button><button id="btnNetCancel" class="btn-cancel" onclick="resetCRMForm('network')">İPTAL</button></div></div><div class="table-scroll-wrapper"><table class="crm-table"><tbody id="networkTableBody"></tbody></table></div></div></div></div>
+<div id="crmModal" class="modal" onclick="closeModalOutside(event, 'crmModal')">
+    <div class="modal-content">
+        <div style="display:flex;justify-content:space-between; margin-bottom:10px;">
+            <h3>👥 Müşteri İlişkileri (CRM)</h3>
+            <span onclick="closeModal('crmModal')" style="cursor:pointer;font-size:24px;">&times;</span>
+        </div>
+        <div class="crm-header">
+            <div id="tab1" class="crm-tab active" onclick="switchCRMTab('investors')">💰 Talep Havuzu</div>
+            <div id="tab2" class="crm-tab" onclick="switchCRMTab('network')">📢 Etki Çevresi</div>
+        </div>
+        
+        <div id="crmInvestors" class="crm-section" style="display:block;">
+            <div class="crm-input-panel">
+                <div class="crm-input-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="form-group"><label>Ad Soyad</label><input type="text" id="invName"></div>
+                    <div class="form-group"><label>Telefon</label><input type="text" id="invPhone" placeholder="05XX..."></div>
+                    <div class="form-group"><label>Talep Tipi</label><select id="invType"><option>Daire</option><option>Villa</option><option>Arsa</option><option>İşyeri</option><option>Yatırımlık</option></select></div>
+                    <div class="form-group"><label>Bölge Tercihi</label><input type="text" id="invRegion" placeholder="Lara, Konyaaltı..."></div>
+                    <div class="form-group"><label>Bütçe (Max)</label><input type="text" id="invBudget" oninput="formatCurrency(this)"></div>
+                    <div class="form-group"><label>Durum</label><select id="invStatus"><option value="Sıcak">🔥 Sıcak (Acil)</option><option value="Ilık">⚖️ Ilık (Normal)</option><option value="Soğuk">🧊 Soğuk (Beklemede)</option></select></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>Notlar</label><textarea id="invNote" rows="1" class="auto-expand"></textarea></div>
+                </div>
+                <div class="crm-buttons">
+                    <button class="btn-save" onclick="saveCRMInvestor()" id="btnInvSave">KAYDET</button>
+                    <button id="btnInvDelete" class="btn-delete-rec" onclick="deleteCRMInvestor()">SİL</button>
+                    <button id="btnInvCancel" class="btn-cancel" onclick="resetCRMForm('investors')">İPTAL</button>
+                </div>
+            </div>
+            <div class="table-scroll-wrapper">
+                <table class="crm-table">
+                    <thead><tr><th>Ad Soyad</th><th>Telefon</th><th>Talep / Bölge</th><th>Bütçe</th><th>Durum</th><th width="80px">İşlem</th></tr></thead>
+                    <tbody id="investorTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="crmNetwork" class="crm-section" style="display:none;">
+            <div class="crm-input-panel">
+                <div class="crm-input-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="form-group"><label>Ad Soyad</label><input type="text" id="netName"></div>
+                    <div class="form-group"><label>Telefon</label><input type="text" id="netPhone"></div>
+                    <div class="form-group"><label>Meslek / Unvan</label><input type="text" id="netJob"></div>
+                    <div class="form-group"><label>Şehir</label><input type="text" id="netCity" value="Antalya"></div>
+                    <div class="form-group"><label>Yakınlık / Ref.</label><input type="text" id="netRelation" placeholder="Arkadaş, Eski Müşteri..."></div>
+                    <div class="form-group" style="grid-column: span 3;"><label>Açıklama / Potansiyel</label><textarea id="netNote" rows="1" class="auto-expand"></textarea></div>
+                </div>
+                <div class="crm-buttons">
+                    <button class="btn-save" onclick="saveCRMNetwork()" id="btnNetSave">KAYDET</button>
+                    <button id="btnNetDelete" class="btn-delete-rec" onclick="deleteCRMNetwork()">SİL</button>
+                    <button id="btnNetCancel" class="btn-cancel" onclick="resetCRMForm('network')">İPTAL</button>
+                </div>
+            </div>
+            <div class="table-scroll-wrapper">
+                <table class="crm-table">
+                    <thead><tr><th>Ad Soyad</th><th>Meslek</th><th>Telefon</th><th>Yakınlık</th><th>Not</th><th width="80px">İşlem</th></tr></thead>
+                    <tbody id="networkTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="descModal" class="modal" onclick="closeModalOutside(event, 'descModal')"><div class="modal-content"><span onclick="closeModal('descModal')" style="cursor:pointer;float:right;font-size:24px;">&times;</span><h3>📝 Notlar</h3><p id="modalText" style="white-space: pre-wrap; margin-top:10px;"></p></div></div>
 <div id="calcModal" class="modal" onclick="closeModalOutside(event, 'calcModal')"><div class="modal-content tool-modal-content"><h3>🧮 Hesap Makinesi</h3><input type="text" id="calcDisplay" class="calc-screen" readonly><div class="calc-grid"><button class="calc-btn" onclick="calcInput('7')">7</button><button class="calc-btn" onclick="calcInput('8')">8</button><button class="calc-btn" onclick="calcInput('9')">9</button><button class="calc-btn op" onclick="calcInput('/')">÷</button><button class="calc-btn" onclick="calcInput('4')">4</button><button class="calc-btn" onclick="calcInput('5')">5</button><button class="calc-btn" onclick="calcInput('6')">6</button><button class="calc-btn op" onclick="calcInput('*')">×</button><button class="calc-btn" onclick="calcInput('1')">1</button><button class="calc-btn" onclick="calcInput('2')">2</button><button class="calc-btn" onclick="calcInput('3')">3</button><button class="calc-btn op" onclick="calcInput('-')">-</button><button class="calc-btn" onclick="calcInput('0')">0</button><button class="calc-btn" onclick="calcInput('.')">.</button><button class="calc-btn" onclick="calcClear()">C</button><button class="calc-btn op" onclick="calcInput('+')">+</button><button class="calc-btn eq" onclick="calcResult()">=</button></div></div></div>
@@ -346,7 +405,6 @@
                    (minP === 0 || p >= minP) && (maxP === 0 || p <= maxP);
         });
 
-        // HİYERARŞİK SIRALAMA (v34 İLE AYNI)
         filtered.sort((a, b) => {
             const getStatusScore = (s) => {
                 if (s === 'Satıldı') return 3;
@@ -355,7 +413,6 @@
             };
             const scoreA = getStatusScore(a.status);
             const scoreB = getStatusScore(b.status);
-
             if (scoreA !== scoreB) return scoreA - scoreB;
             if (scoreA === 1) {
                 const ownerA = a.ownership || 'BANA AİT';
@@ -400,16 +457,10 @@
                     }
                 }); 
             }
-
             let authHtml = item.authEnd ? `<small>${item.authEnd}</small>` : '-';
-
             tbody.innerHTML += `
             <tr class="${rowClass}">
-                <td>
-                    <span class="badge ${badgeClass}">${item.status}</span><br>
-                    <span class="badge ${ownBadgeClass}">${ownLabel}</span><br>
-                    <span class="type-text">${item.type.toUpperCase()}</span>
-                </td>
+                <td><span class="badge ${badgeClass}">${item.status}</span><br><span class="badge ${ownBadgeClass}">${ownLabel}</span><br><span class="type-text">${item.type.toUpperCase()}</span></td>
                 <td><b>${item.district}</b><br><small>${item.neighborhood}</small></td>
                 <td>${item.rooms}<br><small>${floorInfo}</small></td>
                 <td>${item.gross}/${item.net}</td>
@@ -418,9 +469,7 @@
                 <td>${authHtml}</td>
                 <td class="no-print">${btnLinkHtml}</td>
                 <td class="no-print">${btnDesc}</td>
-                <td class="no-print">
-                    <button onclick="editRecord(${item.id})" style="background:#3498db;color:white;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;">DÜZENLE</button>
-                </td>
+                <td class="no-print"><button onclick="editRecord(${item.id})" style="background:#3498db;color:white;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;">DÜZENLE</button></td>
                 <td class="print-only">${item.desc}</td>
             </tr>`;
         });
@@ -464,17 +513,88 @@
     }
     function loadMahalleler(s,t) { const v=document.getElementById(s).value, d=document.getElementById(t); d.innerHTML=''; if(antalyaData[v]) antalyaData[v].sort().forEach(m=>{let o=document.createElement('option');o.value=m;d.appendChild(o);}); }
     
-    function openCRM() { openModal('crmModal'); renderInvestors(); renderNetwork(); document.getElementById('netLastCall').valueAsDate = new Date(); }
+    // CRM YENİLENEN JS
+    function openCRM() { openModal('crmModal'); renderInvestors(); renderNetwork(); }
     function switchCRMTab(tab) { document.querySelectorAll('.crm-section').forEach(s => s.style.display = 'none'); document.querySelectorAll('.crm-tab').forEach(t => t.classList.remove('active')); if(tab === 'investors') { document.getElementById('crmInvestors').style.display = 'block'; document.getElementById('tab1').classList.add('active'); } else { document.getElementById('crmNetwork').style.display = 'block'; document.getElementById('tab2').classList.add('active'); } resetCRMForm('investors'); resetCRMForm('network'); }
-    function saveCRMInvestor() { const inv = { id: crmEditingId ? crmEditingId : Date.now(), name: document.getElementById('invName').value, city: document.getElementById('invCity').value, phone: document.getElementById('invPhone').value, req: document.getElementById('invRequest').value }; if(!inv.name) return; if(crmEditingId) crmData.investors[crmData.investors.findIndex(i => i.id === crmEditingId)] = inv; else crmData.investors.push(inv); saveCRM(); renderInvestors(); resetCRMForm('investors'); }
+    
+    function saveCRMInvestor() { 
+        const inv = { 
+            id: crmEditingId ? crmEditingId : Date.now(), 
+            name: document.getElementById('invName').value, 
+            phone: document.getElementById('invPhone').value, 
+            type: document.getElementById('invType').value,
+            region: document.getElementById('invRegion').value,
+            budget: document.getElementById('invBudget').value,
+            status: document.getElementById('invStatus').value,
+            note: document.getElementById('invNote').value
+        }; 
+        if(!inv.name) return; 
+        if(crmEditingId) crmData.investors[crmData.investors.findIndex(i => i.id === crmEditingId)] = inv; else crmData.investors.push(inv); 
+        saveCRM(); renderInvestors(); resetCRMForm('investors'); 
+    }
+    
+    function saveCRMNetwork() { 
+        const net = { 
+            id: crmEditingId ? crmEditingId : Date.now(), 
+            name: document.getElementById('netName').value, 
+            phone: document.getElementById('netPhone').value, 
+            job: document.getElementById('netJob').value,
+            city: document.getElementById('netCity').value,
+            relation: document.getElementById('netRelation').value,
+            note: document.getElementById('netNote').value
+        }; 
+        if(!net.name) return; 
+        if(crmEditingId) crmData.network[crmData.network.findIndex(n => n.id === crmEditingId)] = net; else crmData.network.push(net); 
+        saveCRM(); renderNetwork(); resetCRMForm('network'); 
+    }
+    
     function deleteCRMInvestor() { if(confirm('Sil?')) { crmData.investors = crmData.investors.filter(i => i.id !== crmEditingId); saveCRM(); renderInvestors(); resetCRMForm('investors'); } }
-    function saveCRMNetwork() { const net = { id: crmEditingId ? crmEditingId : Date.now(), name: document.getElementById('netName').value, city: document.getElementById('netCity').value, phone: document.getElementById('netPhone').value, supply: document.getElementById('netSupply').value, lastCall: document.getElementById('netLastCall').value }; if(!net.name) return; if(crmEditingId) crmData.network[crmData.network.findIndex(n => n.id === crmEditingId)] = net; else crmData.network.push(net); saveCRM(); renderNetwork(); resetCRMForm('network'); }
     function deleteCRMNetwork() { if(confirm('Sil?')) { crmData.network = crmData.network.filter(n => n.id !== crmEditingId); saveCRM(); renderNetwork(); resetCRMForm('network'); } }
-    function resetCRMForm(type) { crmEditingId = null; if(type === 'investors') { document.getElementById('invName').value = ''; document.getElementById('btnInvSave').innerText = "EKLE"; document.getElementById('btnInvDelete').style.display = "none"; } else { document.getElementById('netName').value = ''; document.getElementById('btnNetSave').innerText = "EKLE"; document.getElementById('btnNetDelete').style.display = "none"; } }
-    function renderInvestors() { const tbody = document.getElementById('investorTableBody'); tbody.innerHTML = ''; crmData.investors.forEach(inv => { tbody.innerHTML += `<tr><td><b>${inv.name}</b></td><td>${inv.city}</td><td>${inv.phone}</td><td>${inv.req}</td><td><button onclick="editCRMInvestor(${inv.id})">DÜZENLE</button></td></tr>`; }); }
-    function renderNetwork() { const tbody = document.getElementById('networkTableBody'); tbody.innerHTML = ''; crmData.network.forEach(net => { tbody.innerHTML += `<tr><td><b>${net.name}</b></td><td>${net.city}</td><td>${net.phone}</td><td>${net.supply}</td><td>${net.lastCall}</td><td><button onclick="editCRMNetwork(${net.id})">DÜZENLE</button></td></tr>`; }); }
-    function editCRMInvestor(id) { const i = crmData.investors.find(x => x.id === id); if(!i) return; crmEditingId = id; document.getElementById('invName').value = i.name; document.getElementById('invCity').value = i.city; document.getElementById('invPhone').value = i.phone; document.getElementById('invRequest').value = i.req; document.getElementById('btnInvSave').innerText = "GÜNCELLE"; document.getElementById('btnInvDelete').style.display = "inline-block"; }
-    function editCRMNetwork(id) { const n = crmData.network.find(x => x.id === id); if(!n) return; crmEditingId = id; document.getElementById('netName').value = n.name; document.getElementById('netCity').value = n.city; document.getElementById('netPhone').value = n.phone; document.getElementById('netSupply').value = n.supply; document.getElementById('netLastCall').value = n.lastCall; document.getElementById('btnNetSave').innerText = "GÜNCELLE"; document.getElementById('btnNetDelete').style.display = "inline-block"; }
+    
+    function resetCRMForm(type) { 
+        crmEditingId = null; 
+        if(type === 'investors') { 
+            document.querySelectorAll('#crmInvestors input, #crmInvestors textarea').forEach(i=>i.value=''); 
+            document.getElementById('btnInvSave').innerText = "KAYDET"; document.getElementById('btnInvDelete').style.display = "none"; 
+        } else { 
+            document.querySelectorAll('#crmNetwork input, #crmNetwork textarea').forEach(i=>i.value=''); 
+            document.getElementById('netCity').value = 'Antalya';
+            document.getElementById('btnNetSave').innerText = "KAYDET"; document.getElementById('btnNetDelete').style.display = "none"; 
+        } 
+    }
+    
+    function renderInvestors() { 
+        const tbody = document.getElementById('investorTableBody'); tbody.innerHTML = ''; 
+        crmData.investors.forEach(inv => { 
+            let sClass = inv.status==='Sıcak'?'badge-sicak':(inv.status==='Ilık'?'badge-ilik':'badge-soguk');
+            tbody.innerHTML += `<tr><td><b>${inv.name}</b></td><td>${inv.phone}</td><td>${inv.type} - ${inv.region}</td><td>${inv.budget} TL</td><td><span class="badge ${sClass}">${inv.status}</span></td><td><button onclick="editCRMInvestor(${inv.id})">DÜZENLE</button></td></tr>`; 
+        }); 
+    }
+    
+    function renderNetwork() { 
+        const tbody = document.getElementById('networkTableBody'); tbody.innerHTML = ''; 
+        crmData.network.forEach(net => { 
+            tbody.innerHTML += `<tr><td><b>${net.name}</b></td><td>${net.job}<br><small>${net.city}</small></td><td>${net.phone}</td><td>${net.relation}</td><td>${net.note}</td><td><button onclick="editCRMNetwork(${net.id})">DÜZENLE</button></td></tr>`; 
+        }); 
+    }
+    
+    function editCRMInvestor(id) { 
+        const i = crmData.investors.find(x => x.id === id); if(!i) return; crmEditingId = id; 
+        document.getElementById('invName').value = i.name; document.getElementById('invPhone').value = i.phone; 
+        document.getElementById('invType').value = i.type; document.getElementById('invRegion').value = i.region; 
+        document.getElementById('invBudget').value = i.budget; document.getElementById('invStatus').value = i.status; 
+        document.getElementById('invNote').value = i.note; 
+        document.getElementById('btnInvSave').innerText = "GÜNCELLE"; document.getElementById('btnInvDelete').style.display = "inline-block"; 
+    }
+    
+    function editCRMNetwork(id) { 
+        const n = crmData.network.find(x => x.id === id); if(!n) return; crmEditingId = id; 
+        document.getElementById('netName').value = n.name; document.getElementById('netPhone').value = n.phone; 
+        document.getElementById('netJob').value = n.job; document.getElementById('netCity').value = n.city; 
+        document.getElementById('netRelation').value = n.relation; document.getElementById('netNote').value = n.note; 
+        document.getElementById('btnNetSave').innerText = "GÜNCELLE"; document.getElementById('btnNetDelete').style.display = "inline-block"; 
+    }
+    
     function saveCRM() { localStorage.setItem('KaracabayRE_CRM_v19', JSON.stringify(crmData)); }
 
     let calcExp = ""; function calcInput(v) { calcExp += v; document.getElementById('calcDisplay').value = calcExp; } function calcClear() { calcExp = ""; document.getElementById('calcDisplay').value = ""; } function calcResult() { try { calcExp = eval(calcExp).toString(); document.getElementById('calcDisplay').value = calcExp; } catch(e) { document.getElementById('calcDisplay').value = "Hata"; calcExp=""; } }
