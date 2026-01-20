@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KARACABAYRE.EST - v40</title>
+    <title>KARACABAYRE.EST - v41</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -16,6 +16,8 @@
             --calc-color: #2980b9; 
             --tool-bg: #f8f9fa;
             --sold: #d63031;
+            --warning-bg: #fff3cd;
+            --alert-bg: #f8d7da;
         }
         body { font-family: 'Segoe UI', sans-serif; background: #eef2f3; margin: 0; padding: 20px; color: #333; }
         
@@ -98,15 +100,24 @@
         .crm-input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
         .crm-buttons { display: flex; gap: 10px; margin-top: 15px; }
         
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .calc-btn { padding: 15px; font-size: 18px; cursor: pointer; background: #eee; border: none; border-radius: 4px; }
-        .calc-btn.op { background: var(--secondary); color: white; } .calc-btn.eq { background: var(--accent); color: white; grid-column: span 2; }
-        
         .imar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .btn-imar-select { padding: 15px; background: #34495e; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; text-align: left; display: flex; align-items: center; justify-content: space-between; }
         .btn-imar-select:hover { background: #e67e22; }
         .btn-imar-select i { font-size: 18px; opacity: 0.6; }
 
+        /* v27 TOOL STYLES (RESTORED) */
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .calc-btn { padding: 15px; font-size: 18px; cursor: pointer; background: #eee; border: none; border-radius: 4px; } .calc-btn:hover { background: #ddd; }
+        .calc-btn.op { background: var(--secondary); color: white; } .calc-btn.eq { background: var(--accent); color: white; grid-column: span 2; }
+        .calc-screen { width: 95%; padding: 10px; font-size: 24px; text-align: right; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        .currency-board { display: flex; flex-direction: column; gap: 15px; }
+        .currency-row { display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; padding: 10px; border-radius: 6px; border: 1px solid #eee; }
+        .result-box { margin-top: 15px; padding: 10px; background: #f0f9ff; border: 1px solid #bce8f1; color: #31708f; font-weight: bold; border-radius: 4px; text-align: center; font-size: 1.1em; }
+        .tab-buttons { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; }
+        .tab-btn.active { border-bottom-color: var(--secondary); color: var(--secondary); font-weight: bold; }
+        .tab-content { display: none; } .tab-content.active { display: block; }
+        
         .print-only { display: none; }
         @media print { .input-panel, .filter-bar, .backup-controls, .tools-bar, #loginOverlay { display: none !important; } .no-print { display: none !important; } .print-only { display: table-cell !important; } #appContainer { display: block !important; } body { background: white; padding: 0; margin: 0; } table { width: 100%; font-size: 10px; } th, td { border: 1px solid #ddd; padding: 4px; color: black; } }
     </style>
@@ -116,7 +127,7 @@
 <div id="loginOverlay">
     <div class="login-box">
         <h2>🔒 GÜVENLİ GİRİŞ</h2>
-        <p>KaracabayRE.EST v40</p>
+        <p>KaracabayRE.EST v41</p>
         <input type="password" id="loginPin" placeholder="Şifre (1923)" inputmode="numeric">
         <button onclick="checkLogin()">GİRİŞ YAP</button>
     </div>
@@ -125,7 +136,7 @@
 <div id="appContainer">
     <div class="container">
         <header>
-            <div><h1>🏢 KARACABAYRE.EST <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">PROJE MODÜLÜ</span></h1></div>
+            <div><h1>🏢 KARACABAYRE.EST <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">HYBRID TOOLS & %</span></h1></div>
             <div class="backup-controls">
                 <input type="file" id="fileUpload" style="display:none;" onchange="uploadData(this)">
                 <button class="btn-backup" onclick="document.getElementById('fileUpload').click()">📂 YÜKLE</button>
@@ -137,8 +148,8 @@
             <button class="tool-btn btn-unutma" onclick="openModal('checklistModal'); renderChecklist();"><i class="fa-solid fa-bell"></i> UNUTMA!</button>
             <button class="tool-btn btn-crm" onclick="openCRM()"><i class="fa-solid fa-users"></i> CRM</button>
             <button class="tool-btn btn-calc" onclick="openModal('calcModal')"><i class="fa-solid fa-calculator"></i> Hesap Mak.</button>
-            <button class="tool-btn btn-calc" onclick="openModal('currencyModal'); fetchCurrency();"><i class="fa-solid fa-money-bill-transfer"></i> Döviz</button>
-            <button class="tool-btn btn-calc" onclick="openModal('realEstateCalcModal')"><i class="fa-solid fa-file-contract"></i> Emlak Hsp.</button>
+            <button class="tool-btn btn-calc" onclick="openModal('currencyModal'); fetchCurrency();"><i class="fa-solid fa-money-bill-transfer"></i> Döviz (v27)</button>
+            <button class="tool-btn btn-calc" onclick="openModal('realEstateCalcModal')"><i class="fa-solid fa-file-contract"></i> Emlak (v27)</button>
             <a href="https://www.hesapkurdu.com/konut-kredisi/h/gayrimenkul-deger-artis-kazanci-vergisi-hesaplama" target="_blank" class="tool-btn btn-calc"><i class="fa-solid fa-calculator"></i> DAKV</a>
             
             <a href="https://parselsorgu.tkgm.gov.tr/" target="_blank" class="tool-btn btn-link"><i class="fa-solid fa-map-location-dot"></i> TKGM Parsel</a>
@@ -203,7 +214,7 @@
         </div>
 
         <table id="portfolioTable"><thead><tr><th width="10%">Tür / Durum</th><th width="12%">Lokasyon</th><th width="8%">Özellikler</th><th width="10%">m² (Brüt/Net)</th><th width="11%">Fiyat</th><th width="14%">Müşteri / Tel</th><th width="9%">Yetki</th><th class="no-print" width="6%" style="text-align:center;">Linkler</th><th class="no-print" width="5%" style="text-align:center;">Not</th><th class="no-print" width="8%">İşlem</th><th class="print-only">Açıklama / Notlar</th></tr></thead><tbody id="tableBody"></tbody></table>
-        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (v40 Proje Modülü)</div>
+        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (v41 Hybrid Tools & %)</div>
     </div>
 </div>
 
@@ -300,9 +311,121 @@
 </div>
 
 <div id="descModal" class="modal" onclick="closeModalOutside(event, 'descModal')"><div class="modal-content"><span onclick="closeModal('descModal')" style="cursor:pointer;float:right;font-size:24px;">&times;</span><h3>📝 Notlar</h3><p id="modalText" style="white-space: pre-wrap; margin-top:10px;"></p></div></div>
-<div id="calcModal" class="modal" onclick="closeModalOutside(event, 'calcModal')"><div class="modal-content tool-modal-content"><h3>🧮 Hesap Makinesi</h3><input type="text" id="calcDisplay" class="calc-screen" readonly><div class="calc-grid"><button class="calc-btn" onclick="calcInput('7')">7</button><button class="calc-btn" onclick="calcInput('8')">8</button><button class="calc-btn" onclick="calcInput('9')">9</button><button class="calc-btn op" onclick="calcInput('/')">÷</button><button class="calc-btn" onclick="calcInput('4')">4</button><button class="calc-btn" onclick="calcInput('5')">5</button><button class="calc-btn" onclick="calcInput('6')">6</button><button class="calc-btn op" onclick="calcInput('*')">×</button><button class="calc-btn" onclick="calcInput('1')">1</button><button class="calc-btn" onclick="calcInput('2')">2</button><button class="calc-btn" onclick="calcInput('3')">3</button><button class="calc-btn op" onclick="calcInput('-')">-</button><button class="calc-btn" onclick="calcInput('0')">0</button><button class="calc-btn" onclick="calcInput('.')">.</button><button class="calc-btn" onclick="calcClear()">C</button><button class="calc-btn op" onclick="calcInput('+')">+</button><button class="calc-btn eq" onclick="calcResult()">=</button></div></div></div>
-<div id="currencyModal" class="modal" onclick="closeModalOutside(event, 'currencyModal')"><div class="modal-content tool-modal-content"><h3>💱 Döviz</h3><div class="currency-board"><div class="currency-row"><span class="curr-flag">🇺🇸</span><span class="curr-name">USD</span><input type="number" id="usdRate" class="curr-input"></div><div class="currency-row"><span class="curr-flag">🇪🇺</span><span class="curr-name">EUR</span><input type="number" id="eurRate" class="curr-input"></div></div><hr><input type="number" id="calcCurrAmount" placeholder="1000"><select id="calcCurrType"><option value="USD">USD</option><option value="EUR">EUR</option></select><button class="btn-save" onclick="calculateCurrencyTotal()" style="margin-top:10px;">HESAPLA</button><div id="currencyTotalRes" class="result-box" style="display:none;"><span id="currResText"></span></div></div></div>
-<div id="realEstateCalcModal" class="modal" onclick="closeModalOutside(event, 'realEstateCalcModal')"><div class="modal-content tool-modal-content"><h3>🧾 Emlak Hesap</h3><div class="tab-buttons"><button class="tab-btn active" onclick="switchTab('tabTapu')">Tapu</button><button class="tab-btn" onclick="switchTab('tabEmsal')">Emsal</button><button class="tab-btn" onclick="switchTab('tabVergi')">Vergi</button></div><div id="tabTapu" class="tab-content active"><input type="number" id="calcPrice" placeholder="Satış Bedeli"><button class="btn-save" onclick="calcTapuKomisyon()" style="margin-top:10px;">HESAPLA</button><div id="resTapu" class="result-box" style="display:none;"></div></div><div id="tabEmsal" class="tab-content"><input type="number" id="calcArsaM2" placeholder="Arsa m²"><input type="number" id="calcKaks" placeholder="Emsal"><button class="btn-save" onclick="calcEmsal()" style="margin-top:10px;">HESAPLA</button><div id="resEmsal" class="result-box" style="display:none;"></div></div><div id="tabVergi" class="tab-content"><input type="number" id="calcVergiDeger" placeholder="Rayiç"><button class="btn-save" onclick="calcEmlakVergisi()" style="margin-top:10px;">HESAPLA</button><div id="resVergi" class="result-box" style="display:none;"></div></div></div></div>
+
+<div id="calcModal" class="modal" onclick="closeModalOutside(event, 'calcModal')">
+    <div class="modal-content tool-modal-content">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+            <h3>🧮 Hesap Makinesi</h3><span onclick="closeModal('calcModal')" style="cursor:pointer;font-size:24px;">&times;</span>
+        </div>
+        <input type="text" id="calcDisplay" class="calc-screen" readonly>
+        <div class="calc-grid">
+            <button class="calc-btn" onclick="calcInput('7')">7</button>
+            <button class="calc-btn" onclick="calcInput('8')">8</button>
+            <button class="calc-btn" onclick="calcInput('9')">9</button>
+            <button class="calc-btn op" onclick="calcInput('/')">÷</button>
+            <button class="calc-btn" onclick="calcInput('4')">4</button>
+            <button class="calc-btn" onclick="calcInput('5')">5</button>
+            <button class="calc-btn" onclick="calcInput('6')">6</button>
+            <button class="calc-btn op" onclick="calcInput('*')">×</button>
+            <button class="calc-btn" onclick="calcInput('1')">1</button>
+            <button class="calc-btn" onclick="calcInput('2')">2</button>
+            <button class="calc-btn" onclick="calcInput('3')">3</button>
+            <button class="calc-btn op" onclick="calcInput('-')">-</button>
+            <button class="calc-btn" onclick="calcInput('0')">0</button>
+            <button class="calc-btn" onclick="calcInput('.')">.</button>
+            <button class="calc-btn op" onclick="calcInput('%')">%</button> <button class="calc-btn op" onclick="calcInput('+')">+</button>
+            <button class="calc-btn" onclick="calcClear()">C</button>
+            <button class="calc-btn eq" onclick="calcResult()">=</button>
+        </div>
+    </div>
+</div>
+
+<div id="currencyModal" class="modal" onclick="closeModalOutside(event, 'currencyModal')">
+    <div class="modal-content tool-modal-content">
+        <div style="display:flex;justify-content:space-between; margin-bottom:15px;">
+            <h3>💱 Döviz (Efektif Satış)</h3><span onclick="closeModal('currencyModal')" style="cursor:pointer;font-size:24px;">&times;</span>
+        </div>
+        <div style="margin-bottom:15px;">
+            <a href="https://www.tcmb.gov.tr/wps/wcm/connect/tr/tcmb+tr/main+page+site+area/bugun" target="_blank" class="tool-btn" style="width:100%; justify-content:center; text-align:center; background:#fef9e7; border:1px solid #f39c12; color:#d35400;"> TCMB Kurlarını Aç </a>
+            <div style="font-size:11px; color:#666; margin-top:5px; text-align:center;">*Otomatik değerler piyasa verisidir, manuel güncelleyebilirsiniz.</div>
+        </div>
+        <div class="currency-board">
+            <div class="currency-row">
+                <span class="curr-flag">🇺🇸</span>
+                <span class="curr-name">USD / TRY</span>
+                <div>
+                    <div style="font-size:10px; color:#888;">Satış</div>
+                    <input type="number" id="usdRate" class="curr-input" style="width:80px; padding:5px; border:1px solid #ddd; border-radius:3px;">
+                </div>
+            </div>
+            <div class="currency-row">
+                <span class="curr-flag">🇪🇺</span>
+                <span class="curr-name">EUR / TRY</span>
+                <div>
+                    <div style="font-size:10px; color:#888;">Satış</div>
+                    <input type="number" id="eurRate" class="curr-input" style="width:80px; padding:5px; border:1px solid #ddd; border-radius:3px;">
+                </div>
+            </div>
+        </div>
+        <hr style="margin:15px 0; border:0; border-top:1px solid #eee;">
+        <div class="form-group">
+            <label>Çevrilecek Tutar</label>
+            <div style="display:flex; gap:10px;">
+                <input type="number" id="calcCurrAmount" placeholder="1000" style="flex:2;">
+                <select id="calcCurrType" style="flex:1;">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn-save" style="width:100%; margin-top:10px;" onclick="calculateCurrencyTotal()">HESAPLA (TL)</button>
+        <div id="currencyTotalRes" class="result-box" style="display:none;">
+            <span id="currResText">0,00 TL</span>
+        </div>
+    </div>
+</div>
+
+<div id="realEstateCalcModal" class="modal" onclick="closeModalOutside(event, 'realEstateCalcModal')">
+    <div class="modal-content tool-modal-content">
+        <div style="display:flex;justify-content:space-between; margin-bottom:10px;">
+            <h3>🧾 Emlak Hesaplamaları</h3><span onclick="closeModal('realEstateCalcModal')" style="cursor:pointer;font-size:24px;">&times;</span>
+        </div>
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('tabTapu')">Tapu & Komisyon</button>
+            <button class="tab-btn" onclick="switchTab('tabEmsal')">Emsal</button>
+            <button class="tab-btn" onclick="switchTab('tabVergi')">Emlak Vergisi</button>
+        </div>
+        
+        <div id="tabTapu" class="tab-content active">
+            <div class="form-group"><label>Satış Bedeli (TL)</label><input type="number" id="calcPriceComp" placeholder="Örn: 5000000"></div>
+            <button class="btn-save" style="width:100%; margin-top:10px;" onclick="calcTapuKomisyon()">HESAPLA</button>
+            <div id="resTapu" class="result-box" style="display:none; text-align:left; font-size:13px;"></div>
+        </div>
+
+        <div id="tabEmsal" class="tab-content">
+            <div class="form-group"><label>Arsa Alanı (m²)</label><input type="number" id="calcArsaM2"></div>
+            <div class="form-group"><label>KAKS / Emsal Oranı</label><input type="number" id="calcKaks" placeholder="Örn: 1.5"></div>
+            <button class="btn-save" style="width:100%; margin-top:10px;" onclick="calcEmsal()">HESAPLA</button>
+            <div id="resEmsal" class="result-box" style="display:none;"></div>
+        </div>
+
+        <div id="tabVergi" class="tab-content">
+            <div class="form-group"><label>Emlak Türü</label></div>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <select id="calcVergiType" style="flex:1;">
+                    <option value="0.002">Konut (B.Şehir - %0.2)</option>
+                    <option value="0.001">Konut (Normal - %0.1)</option>
+                    <option value="0.004">İşyeri (B.Şehir - %0.4)</option>
+                    <option value="0.002">İşyeri (Normal - %0.2)</option>
+                    <option value="0.006">Arsa (B.Şehir - %0.6)</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Rayiç Bedel</label><input type="number" id="calcVergiDeger" placeholder="Bedel"></div>
+            <button class="btn-save" style="width:100%; margin-top:5px;" onclick="calcEmlakVergisi()">VERGİ HESAPLA</button>
+            <div id="resVergi" class="result-box" style="display:none;"></div>
+        </div>
+    </div>
+</div>
 
 <script>
     function checkLogin() { if(document.getElementById('loginPin').value==="1923"){document.getElementById('loginOverlay').style.display='none';document.getElementById('appContainer').style.display='block';window.scrollTo(0,0);}else{alert("Hatalı Şifre!");} }
@@ -317,7 +440,7 @@
 
     const floorList = ["Giriş","Zemin","1","2","3","4","5","6","7","8","9","10+","Çatı Dubleks","Bahçe Dubleks","Müstakil"];
     
-    // YENİ EKLENEN "PROJE" SEÇENEĞİ
+    // YENİ EKLENEN "PROJE" SEÇENEĞİ (v40'tan)
     const typeList = ["Daire","Villa","Proje","Arsa","İşyeri","Turistik","Komple Bina","Bahçe","Tarla","Zeytinlik"];
 
     let crmData = JSON.parse(localStorage.getItem('KaracabayRE_CRM_v19')) || { investors: [], network: [] };
@@ -642,13 +765,30 @@
     
     function saveCRM() { localStorage.setItem('KaracabayRE_CRM_v19', JSON.stringify(crmData)); }
 
-    let calcExp = ""; function calcInput(v) { calcExp += v; document.getElementById('calcDisplay').value = calcExp; } function calcClear() { calcExp = ""; document.getElementById('calcDisplay').value = ""; } function calcResult() { try { calcExp = eval(calcExp).toString(); document.getElementById('calcDisplay').value = calcExp; } catch(e) { document.getElementById('calcDisplay').value = "Hata"; calcExp=""; } }
+    // --- TOOLS LOGIC (v27 Style with % Update) ---
+    let calcExp = ""; 
+    function calcInput(v) { 
+        if(v === '%') {
+             calcExp += '/100'; // Yüzdeyi bölü 100 olarak ekle
+        } else {
+             calcExp += v; 
+        }
+        document.getElementById('calcDisplay').value = calcExp; 
+    } 
+    function calcClear() { calcExp = ""; document.getElementById('calcDisplay').value = ""; } 
+    function calcResult() { try { calcExp = eval(calcExp).toString(); document.getElementById('calcDisplay').value = calcExp; } catch(e) { document.getElementById('calcDisplay').value = "Hata"; calcExp=""; } }
+    
     async function fetchCurrency() { try { const res = await fetch('https://api.exchangerate-api.com/v4/latest/TRY'); const data = await res.json(); if(document.getElementById('usdRate').value === "") document.getElementById('usdRate').value = (1 / data.rates.USD).toFixed(4); if(document.getElementById('eurRate').value === "") document.getElementById('eurRate').value = (1 / data.rates.EUR).toFixed(4); } catch(e) {} }
+    
     function calculateCurrencyTotal() { let amount = parseFloat(document.getElementById('calcCurrAmount').value); let type = document.getElementById('calcCurrType').value; let rate = type === 'USD' ? parseFloat(document.getElementById('usdRate').value) : parseFloat(document.getElementById('eurRate').value); if(!amount || !rate) return; document.getElementById('currResText').innerText = (amount * rate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " TL"; document.getElementById('currencyTotalRes').style.display = 'block'; }
+    
     function switchTab(id) { document.querySelectorAll('.tab-content').forEach(d => d.style.display='none'); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).style.display = 'block'; event.currentTarget.classList.add('active'); }
-    function calcTapuKomisyon() { let p = parseFloat(document.getElementById('calcPrice').value); if(!p) return; let tapu = p * 0.04; let kom = p * 0.02 * 1.20; document.getElementById('resTapu').innerHTML = `Tapu: ${(p*0.04).toLocaleString()} TL | Komisyon: ${kom.toLocaleString()} TL`; document.getElementById('resTapu').style.display = 'block'; }
-    function calcEmsal() { let m2 = parseFloat(document.getElementById('calcArsaM2').value); let kaks = parseFloat(document.getElementById('calcKaks').value); if(!m2 || !kaks) return; document.getElementById('resEmsal').innerHTML = `İnşaat: <strong>${(m2*kaks).toLocaleString()} m²</strong>`; document.getElementById('resEmsal').style.display = 'block'; }
-    function calcEmlakVergisi() { let val = parseFloat(document.getElementById('calcVergiDeger').value); if(!val) return; document.getElementById('resVergi').innerHTML = `Vergi: <strong>${(val*0.002).toLocaleString()} TL</strong>`; document.getElementById('resVergi').style.display = 'block'; }
+    
+    function calcTapuKomisyon() { let p = parseFloat(document.getElementById('calcPriceComp').value); if(!p) return; let tapu = p * 0.04; let kom = p * 0.02 * 1.20; document.getElementById('resTapu').innerHTML = `<strong>Tapu Harcı (%4):</strong> ${(p*0.04).toLocaleString()} TL<br><strong>Komisyon (%2+KDV):</strong> ${kom.toLocaleString()} TL`; document.getElementById('resTapu').style.display = 'block'; }
+    
+    function calcEmsal() { let m2 = parseFloat(document.getElementById('calcArsaM2').value); let kaks = parseFloat(document.getElementById('calcKaks').value); if(!m2 || !kaks) return; document.getElementById('resEmsal').innerHTML = `İnşaat Alanı: <strong>${(m2*kaks).toLocaleString()} m²</strong>`; document.getElementById('resEmsal').style.display = 'block'; }
+    
+    function calcEmlakVergisi() { let val = parseFloat(document.getElementById('calcVergiDeger').value); let rate = parseFloat(document.getElementById('calcVergiType').value); if(!val) return; document.getElementById('resVergi').innerHTML = `Vergi: <strong>${(val*rate).toLocaleString()} TL</strong>`; document.getElementById('resVergi').style.display = 'block'; }
 </script>
 </body>
 </html>
