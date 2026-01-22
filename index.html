@@ -105,7 +105,7 @@
         .btn-imar-select:hover { background: #e67e22; }
         .btn-imar-select i { font-size: 18px; opacity: 0.6; }
 
-        /* v27 TOOL STYLES (RESTORED) */
+        /* v27 STİLİ - ARAÇLAR VE TABLAR */
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .calc-btn { padding: 15px; font-size: 18px; cursor: pointer; background: #eee; border: none; border-radius: 4px; } .calc-btn:hover { background: #ddd; }
         .calc-btn.op { background: var(--secondary); color: white; } .calc-btn.eq { background: var(--accent); color: white; grid-column: span 2; }
@@ -440,7 +440,7 @@
 
     const floorList = ["Giriş","Zemin","1","2","3","4","5","6","7","8","9","10+","Çatı Dubleks","Bahçe Dubleks","Müstakil"];
     
-    // YENİ EKLENEN "PROJE" SEÇENEĞİ (v40'tan)
+    // v40 "PROJE" SEÇENEĞİ
     const typeList = ["Daire","Villa","Proje","Arsa","İşyeri","Turistik","Komple Bina","Bahçe","Tarla","Zeytinlik"];
 
     let crmData = JSON.parse(localStorage.getItem('KaracabayRE_CRM_v19')) || { investors: [], network: [] };
@@ -751,44 +751,4 @@
         document.getElementById('invType').value = i.type; document.getElementById('invRegion').value = i.region; 
         document.getElementById('invBudget').value = i.budget; document.getElementById('invStatus').value = i.status; 
         document.getElementById('invNote').value = i.note; 
-        document.getElementById('btnInvSave').innerText = "GÜNCELLE"; document.getElementById('btnInvDelete').style.display = "inline-block"; 
-    }
-    
-    function editCRMNetwork(id) { 
-        const n = crmData.network.find(x => x.id === id); if(!n) return; crmEditingId = id; 
-        document.getElementById('netName').value = n.name; document.getElementById('netPhone').value = n.phone; 
-        document.getElementById('netJob').value = n.job; document.getElementById('netCity').value = n.city; 
-        document.getElementById('netRelation').value = n.relation; document.getElementById('netNote').value = n.note; 
-        document.getElementById('netLastCall').value = n.lastCall;
-        document.getElementById('btnNetSave').innerText = "GÜNCELLE"; document.getElementById('btnNetDelete').style.display = "inline-block"; 
-    }
-    
-    function saveCRM() { localStorage.setItem('KaracabayRE_CRM_v19', JSON.stringify(crmData)); }
-
-    // --- TOOLS LOGIC (v27 Style with % Update) ---
-    let calcExp = ""; 
-    function calcInput(v) { 
-        if(v === '%') {
-             calcExp += '/100'; // Yüzdeyi bölü 100 olarak ekle
-        } else {
-             calcExp += v; 
-        }
-        document.getElementById('calcDisplay').value = calcExp; 
-    } 
-    function calcClear() { calcExp = ""; document.getElementById('calcDisplay').value = ""; } 
-    function calcResult() { try { calcExp = eval(calcExp).toString(); document.getElementById('calcDisplay').value = calcExp; } catch(e) { document.getElementById('calcDisplay').value = "Hata"; calcExp=""; } }
-    
-    async function fetchCurrency() { try { const res = await fetch('https://api.exchangerate-api.com/v4/latest/TRY'); const data = await res.json(); if(document.getElementById('usdRate').value === "") document.getElementById('usdRate').value = (1 / data.rates.USD).toFixed(4); if(document.getElementById('eurRate').value === "") document.getElementById('eurRate').value = (1 / data.rates.EUR).toFixed(4); } catch(e) {} }
-    
-    function calculateCurrencyTotal() { let amount = parseFloat(document.getElementById('calcCurrAmount').value); let type = document.getElementById('calcCurrType').value; let rate = type === 'USD' ? parseFloat(document.getElementById('usdRate').value) : parseFloat(document.getElementById('eurRate').value); if(!amount || !rate) return; document.getElementById('currResText').innerText = (amount * rate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " TL"; document.getElementById('currencyTotalRes').style.display = 'block'; }
-    
-    function switchTab(id) { document.querySelectorAll('.tab-content').forEach(d => d.style.display='none'); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).style.display = 'block'; event.currentTarget.classList.add('active'); }
-    
-    function calcTapuKomisyon() { let p = parseFloat(document.getElementById('calcPriceComp').value); if(!p) return; let tapu = p * 0.04; let kom = p * 0.02 * 1.20; document.getElementById('resTapu').innerHTML = `<strong>Tapu Harcı (%4):</strong> ${(p*0.04).toLocaleString()} TL<br><strong>Komisyon (%2+KDV):</strong> ${kom.toLocaleString()} TL`; document.getElementById('resTapu').style.display = 'block'; }
-    
-    function calcEmsal() { let m2 = parseFloat(document.getElementById('calcArsaM2').value); let kaks = parseFloat(document.getElementById('calcKaks').value); if(!m2 || !kaks) return; document.getElementById('resEmsal').innerHTML = `İnşaat Alanı: <strong>${(m2*kaks).toLocaleString()} m²</strong>`; document.getElementById('resEmsal').style.display = 'block'; }
-    
-    function calcEmlakVergisi() { let val = parseFloat(document.getElementById('calcVergiDeger').value); let rate = parseFloat(document.getElementById('calcVergiType').value); if(!val) return; document.getElementById('resVergi').innerHTML = `Vergi: <strong>${(val*rate).toLocaleString()} TL</strong>`; document.getElementById('resVergi').style.display = 'block'; }
-</script>
-</body>
-</html>
+        document.getElementById('btnInvSave').innerText = "GÜ
