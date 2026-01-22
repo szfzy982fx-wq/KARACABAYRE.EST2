@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KARACABAYRE.EST - v41</title>
+    <title>KARACABAYRE.EST - v41 (Final)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -443,9 +443,27 @@
     // v40 "PROJE" SEÇENEĞİ
     const typeList = ["Daire","Villa","Proje","Arsa","İşyeri","Turistik","Komple Bina","Bahçe","Tarla","Zeytinlik"];
 
-    let crmData = JSON.parse(localStorage.getItem('KaracabayRE_CRM_v19')) || { investors: [], network: [] };
-    let portfolio = JSON.parse(localStorage.getItem('KaracabayRE_EST_DB_v19')) || [];
-    let checklist = JSON.parse(localStorage.getItem('KaracabayRE_CHK_v1')) || [];
+    // --- HATA KORUMALI VERİ YÜKLEME ---
+    let crmData = { investors: [], network: [] };
+    let portfolio = [];
+    let checklist = [];
+
+    try {
+        const storedCRM = localStorage.getItem('KaracabayRE_CRM_v19');
+        if(storedCRM) crmData = JSON.parse(storedCRM);
+    } catch(e) { console.error("CRM Veri Hatası", e); crmData = { investors: [], network: [] }; }
+
+    try {
+        const storedPortfolio = localStorage.getItem('KaracabayRE_EST_DB_v19');
+        if(storedPortfolio) portfolio = JSON.parse(storedPortfolio);
+    } catch(e) { console.error("Portföy Veri Hatası", e); portfolio = []; }
+
+    try {
+        const storedChecklist = localStorage.getItem('KaracabayRE_CHK_v1');
+        if(storedChecklist) checklist = JSON.parse(storedChecklist);
+    } catch(e) { console.error("Checklist Veri Hatası", e); checklist = []; }
+    // -----------------------------------
+
     let editingId = null; let crmEditingId = null;
 
     window.onload = function() { populateSelects(); renderTable(); };
